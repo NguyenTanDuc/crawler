@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <% @list_news.each do |post| %>
+      <% title = post.search(".title_news a:first") %>
+      <p>
+        <%= link_to title.text, path %>
+        <p><%= post.search(".news_lead").text %></p>
+      </p>
+    <% end %>
+  </body>
+</html>
