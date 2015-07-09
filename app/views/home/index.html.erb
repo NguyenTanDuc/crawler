@@ -4,12 +4,17 @@
     <title></title>
   </head>
   <body>
-    <% @list_news.each do |post| %>
-      <% title = post.search(".title_news a:first") %>
-      <p>
-        <%= link_to title.text, path %>
-        <p><%= post.search(".news_lead").text %></p>
-      </p>
+    <% @list_news.each_with_index do |title, num| %>
+      <div class="row">
+        <%= link_to @title[num], @links[num] %>
+        <div class="row col-md-12">
+          <img src="<%= @images[num] %>" class="col-md-3">
+          <div class="col-md-8">
+            <%= @description[num] %>
+          </div>
+        </div>
+      </div>
+      <hr>
     <% end %>
   </body>
 </html>
