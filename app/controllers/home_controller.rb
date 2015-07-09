@@ -1,14 +1,40 @@
 require 'open-uri'
 
 class HomeController < ApplicationController
+  DEFAULT_URI = "http://www.green-japan.com"
   def index
     agent = Mechanize.new
-    page = agent.get("http://vnexpress.net")
-    @list_news = page.search("ul.list_news li")
-    @title = @list_news.search(".title_news a.txt_link").collect(&:text)
-    @description = @list_news.search(".news_lead").collect(&:text)
-    @links = @list_news.search("a.txt_link").map {|link| link['href']}
-    @images = @list_news.search(".thumb img").map {|src| src['src']}
-    # page2 = page.link_with(text: @title[0]).click
+    agent.user_agent_alias = 'Mac Safari'
+    page = agent.get(DEFAULT_URI)
+    list_page = page.link_with(text: page.search("#gm_new a").text).click
+    # @list_titles = list_page.search(".detail-head h2").collect(&:text)
+    @list_link = list_page.search(".detail-btn a").map {|link| link["href"]}
+    binding.pry
+    until list_page.search("a.next_page").blank? do
+      list_page = list_page.link_with(text:list_page.search("a.next_page").text).click
+      @list_link += list_page.search(".detail-btn a").map {|link| link["href"]}.compact.uniq
+    end
+
+    @list_titles = []
+    @list_link.each do |link|
+      puts link
+      new_page = agent.get(DEFAULT_URI + link)
+      @list_titles += new_page.search("#com_title h2").collect(&:text)
+    end
+    binding.pry
+    @list_titles.compact.uniq
+    binding.pry
   end
+
+  def take_link
+  end
+
+  def take_uri
+
+  end
+
+  def take_title
+
+  end
+
 end

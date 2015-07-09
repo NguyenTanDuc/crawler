@@ -4,17 +4,10 @@
     <title></title>
   </head>
   <body>
-    <% @list_news.each_with_index do |title, num| %>
+    <% @list_titles.each do |title| %>
       <div class="row">
-        <%= link_to @title[num], @links[num] %>
-        <div class="row col-md-12">
-          <img src="<%= @images[num] %>" class="col-md-3">
-          <div class="col-md-8">
-            <%= @description[num] %>
-          </div>
-        </div>
+        <%= title %>
       </div>
-      <hr>
     <% end %>
   </body>
 </html>
